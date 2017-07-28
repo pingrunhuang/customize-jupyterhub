@@ -19,3 +19,7 @@ To start jupyterhub, type:
 jupyterhub
 ```
 in the current directory.
+
+## setup jupyterhub blogs:
+https://zonca.github.io/2016/10/dockerspawner-cuda.html
+https://opensource.googleblog.com/2016/10/using-tensorflow-and-jupyterhub.html
