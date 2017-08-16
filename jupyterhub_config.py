@@ -215,13 +215,28 @@ c.JupyterHub.hub_ip = '172.17.0.1'
 #  Should be a subclass of Spawner.
 
 
-c.JupyterHub.spawner_class = 'dockerspawner.dockerspawner'
-notebook_dir = '/home/jovyan/work'
+from dockerspawner.dockerspawner import DockerSpawner
+class TSSpawner(DockerSpawner):
+    @property
+    def volume_mount_points(self):
+        mount_points = super().volume_mount_points
+        mount_points.append('/home/frank/dev')
+        #return ['/home/frank/dev']
+
+    @property
+    def volume_mount_points(self):
+        volumes = super().volume_binds
+        volumes['/home/jovyan/work'] = {
+                    'bind': '/home/frank/dev',
+                    'ro':False
+                }
+c.JupyterHub.spawner_class = 'dockerspawner.DockerSpawner'
+notebook_dir = '/home/jovyan/'
 c.DockerSpawner.notebook_dir = notebook_dir
-c.DockerSpawner.volumes = {'/home/frank/dev/{username}':notebook_dir}
+c.DockerSpawner.volumes = {'/tmp/jupyterhub/{username}':notebook_dir}
 
 # customize your image
-# c.DockerSpawner.container_image = "systemuser-cuda-devel"
+c.DockerSpawner.container_image = "ts-jupyterhub"
 
 ## Path to SSL certificate file for the public facing interface of the proxy
 #  

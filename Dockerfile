@@ -4,10 +4,14 @@ FROM jupyter/scipy-notebook
 
 RUN pip install tensorflow
 
-# since copy is copying the content of the directory specified, so we have to create it first
-RUN mkdir /opt/conda/lib/python3.6/site-packages/package-to-embed
+
+# copy the chinese font to the matplotlib built in lib directory
+COPY ./simhei.ttf /opt/conda/lib/python3.6/site-packages/matplotlib/mpl-data/fonts/ttf/
+
+RUN rm -rf ~/.cache/matplotlib
 
 COPY ./package-to-embed /opt/conda/lib/python3.6/site-packages/package-to-embed
 
 RUN /usr/local/bin/start-singleuser.sh -h
+
 CMD ["/usr/local/bin/start-singleuser.sh"]
